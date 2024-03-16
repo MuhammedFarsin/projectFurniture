@@ -1,0 +1,132 @@
+<%- include("../layout/admin/header") %>
+
+
+
+        <section class="content-main">
+            <form action="/admin/products/create-edit-product?productId=<%= encodeURIComponent(product._id) %>" method="post" enctype="multipart/form-data" onsubmit="return AddProductvalidate()">
+
+
+              
+            <div class="row">
+                <div class="col-12">
+                    <div class="content-header">
+                        <h2 class="content-title">Edit Product</h2>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6> General info</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Product title</label>
+                                        <input name="productName" type="text" placeholder="Type here" id="product_title" class="form-control" value="<%= product.productName %>">
+                                        <p class="text-danger" id="nameError"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Description</label>
+                                        <textarea name="description" placeholder="Type here" id="prod_description" class="form-control" rows="4"><%= product.description %></textarea>
+                                        <p class="text-danger" id="descError"></p>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>2.1 Market Price</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Cost in INR</label>
+                                        <input name="marketPrice" type="text" placeholder="₹0.00" id="product_regPrice" class="form-control"  value="<%= product.regularPrice %>">
+                                        <p class="text-danger" id="regPriceError"></p>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>2.2 Sale Price</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Cost in INR</label>
+                                        <input name="salePrice" type="text" placeholder="₹0.00" id="product_salePrice" class="form-control" value="<%= product.salePrice %>" >
+                                        <p class="text-danger" id="salePriceError"></p>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>3. Category</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+
+                                        <% for( let i = 0; i < category.length; i++ ) { %>
+                                        
+                                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                                <input class="form-check-input" name="myCategory" type="radio" value="<%= category[i]._id %>" <% if (product.category.toString() === category[i]._id.toString()) { %> checked='' <% } %>>
+                                                <span class="form-check-label"><%= category[i].categoryName %>  </span>
+                                            </label>
+                                        <% } %>
+
+                                        
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>4. Media</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Images</label>
+                                        
+                                        <!-- Display existing images -->
+                                        <div id="existingImagesContainer">
+                                            <% for (let i = 0; i < product.image.length; i++) { %>
+                                                <div data-filename="<%= product.image[i].filename %>" class="image-container">
+                                                    <img src="/public/assetsNew/uploads/<%= product.image[i].filename %>" alt="Existing Image" class="existing-image" style="max-width: 100px; max-height: 100px;">
+                                                    <a  onclick="deleteSingleImage('<%= product._id %>','<%= product.image[i].filename %>')"><i class="fas fa-times delete-icon"></i></a>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                        
+                            
+                                        <!-- Input for adding or replacing images -->
+                                        <input class="form-control" type="file" name="newImages" multiple>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- .row end// -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6> Quantity</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <input name="quantity" type="number" placeholder="0" id="prod_stock" class="form-control" value="<%= product.quantity %>">
+                                        <p class="text-danger" id="sotckError"></p>
+                                    </div>
+                                </div> <!-- col.// -->
+                                <br><br>
+                                <div>
+                                    <button type="submit" class="btn btn-md rounded font-sm hover-up">Update product</button>
+                                </div>
+                            </div> <!-- row.// -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+        </section> <!-- content-main end// -->
+       
+    <%- include("../layout/admin/footer") %>

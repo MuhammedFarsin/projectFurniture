@@ -1,0 +1,203 @@
+<%- include("../layout/admin/header") -%>
+
+<section class="content-main">
+  <div class="content-header">
+    <div>
+      <h2 class="content-title card-title">Sale Report </h2>
+      <p>Lorem ipsum dolor sit amet.</p>
+    </div>
+    <div>
+     
+      <br>
+      <button onclick="downloadPDF()" id="downloadButton"  class="btn btn-md rounded font-sm hover-up">download pdf</button>
+
+
+    </div>
+  </div>
+  <div>
+
+  </div>
+  <div class="card mb-4">
+    <header class="card-header">
+      <div class="row gx-3">
+        <div class="col-lg-4 col-md-6 me-auto">
+          <div class="input-group">
+            <input type="text" id="orderSearchInput" placeholder="Search..." class="form-control" oninput="handleSearch()">
+        </div>
+      </div>
+      <div class="col-md-2 col-6">
+        <input
+          type="date"
+          id="startDate"
+          class="form-control"
+          value="<%= startDate ? startDate : '' %>"
+          onchange="updateSalesReport()"
+        />
+      </div>
+      
+      <div class="col-md-2 col-6">
+        <input
+          type="date"
+          id="endDate"
+          class="form-control"
+          value="<%= endDate ? endDate : '' %>"
+          onchange="updateSalesReport()"
+        />
+      </div>
+      
+     
+        <div class="col-lg-2 col-6 col-md-3">
+          <select class="form-select">
+            <option>Status</option>
+            <option>Active</option>
+            <option>Disabled</option>
+            <option>Show all</option>
+          </select>
+        </div>
+        <div class="col-lg-2 col-6 col-md-3">
+          <select class="form-select">
+            <option>Show 20</option>
+            <option>Show 30</option>
+            <option>Show 40</option>
+          </select>
+        </div>
+      </div>
+    </header> <!-- card-header end// -->
+    <div class="card-body">
+      <div class="table-responsive">
+        <!-- saleReport.ejs -->
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th> ORDER ID</th>
+              <th scope="col">Date</th>
+              <th scope="col">Customer</th>
+
+              <th scope="col">product</th>
+
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+              <th scope="col">Status</th>
+              <th scope="col">Payment Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- for loop using ejs -->
+            <% for (const order of orders) { %>
+              <% for (let j=0; j < order.products.length; j++) { %>
+                <% const currentProduct = order.products[j].productId; %>
+
+                  <tr>
+                    <td>
+                      <%= order._id %>
+                    </td>
+                    <td>
+                      <%= order.createdOn.toLocaleDateString() %>
+                    </td>
+                    <% if (order.user) { %>
+                      <td>
+                        <%= order.user.name %>
+                      </td>
+                      <% } else { %>
+                        <td>User not available</td>
+                        <% } %>
+                          <!-- Check if currentProduct is not null before accessing its properties -->
+                          <td><%= currentProduct ? currentProduct.productName : 'Product not available' %></td>
+
+                          <td>
+                            <%= order.products[j].quantity %>
+                          </td>
+                          <td>
+                            <%= order.totalPrice %>
+                          </td>
+                          <td><span class="badge rounded-pill alert-success">Delivered</span></td>
+                          <td>
+                            <%= order.payment %>
+                          </td>
+                  </tr>
+                  <% } %>
+                    <% } %>
+          </tbody>
+        </table>
+
+
+      </div> <!-- table-responsive //end -->
+    </div> <!-- card-body end// -->
+  </div> <!-- card end// -->
+  <div class="pagination-area mt-15 mb-sm-5 mb-lg-0 text-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i === parseInt(page) ? 'active' : '' %>">
+              <a class="page-link" href="/admin/salesReport?page=<%= i %>">
+                <%= i %>
+              </a>
+            </li>
+          <% } %>
+        </ul>
+    </nav>
+</div>
+  
+</section>
+
+
+<%- include("../layout/admin/footer")%>
+<script>
+  function downloadPDF() {
+    // Make a request to the server to trigger the PDF download
+    fetch('/admin/download-pdf', {
+      method: 'GET',
+    })
+      .then((response) => {
+        if (response.ok) {
+          // If the response is successful, trigger the download
+          return response.blob();
+        } else {
+          // Handle error
+          throw new Error('Failed to fetch PDF');
+        }
+      })
+      .then((blob) => {
+        // Create a blob URL and trigger the download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sales-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error(error.message);
+        // Handle error, e.g., show an alert to the user
+      });
+  }
+</script>
+<script>
+  function handleSearch() {
+      // Get the value entered by the user
+      const searchValue = document.getElementById("orderSearchInput").value.toLowerCase();
+
+      // Get all rows in the table
+      const rows = document.querySelectorAll(".table tbody tr");
+
+      // Loop through each row and hide/show based on the search value
+      rows.forEach(row => {
+          const orderId = row.querySelector("td:first-child").textContent.toLowerCase();
+          const customerName = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+          const productName = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+
+          // Check if the search value matches any of the columns
+          if (orderId.includes(searchValue) || customerName.includes(searchValue) || productName.includes(searchValue)) {
+              row.style.display = ""; // Show the row
+          } else {
+              row.style.display = "none"; // Hide the row
+          }
+      });
+  }
+</script>
+
+  
+

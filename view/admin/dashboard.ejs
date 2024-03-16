@@ -1,0 +1,235 @@
+<%- include('../layout/admin/header') %>
+<section class="content-main" style="background-color:rgb(255, 250, 250);">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Dashboard </h2>
+            <p>Whole data about your business here</p>
+        </div>
+        <div>
+            <a href="/admin/salesReport" class="btn btn-primary"><i
+                    class="text-muted material-icons md-post_add"></i>sale report</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                            class="text-primary material-icons md-monetization_on"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Revenue</h6>
+                        <span>₹<%= revenue.toLocaleString() %></span>
+                        <span class="text-sm">
+                            Shipping fees are not included
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-success-light"><i
+                            class="text-success material-icons md-local_shipping"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Orders</h6> <span>
+                            <%= orders %>
+                        </span>
+                        <span class="text-sm">
+                            Excluding orders in transit
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body ">
+                <article class="icontext" style="margin-bottom: 21px;">
+                    <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                            class="text-warning material-icons md-qr_code"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Products</h6> <span>
+                            <%= product %>
+                        </span>
+                        <span class="text-sm">
+                            In <%= category %> Categories
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext" style="margin-bottom: -21px;">
+                    <span class="icon icon-sm rounded-circle bg-info-light"><i
+                            class="text-info material-icons md-shopping_basket"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Monthly Earning</h6> <span>₹<%=
+                                monthlyRevenue.toLocaleString() %></span>
+                        <span class="text-sm">
+                            Based in your local time.
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="intervalSelector" class="form-label">Select Interval:</label>
+        <select id="intervalSelector" class="form-select">
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-12">
+                    <article class="card-body">
+                        <!-- Display the sales chart -->
+                        <canvas id="salesChartCanvas" height="100px"></canvas>
+
+                        <!-- Display details of the most sold product -->
+                        
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h3>Top Selling Products</h3>
+        <div class="row">
+            <div class="col-12">
+                <article>
+                    <!-- Display details of the most sold products -->
+                    <% if (Array.isArray(topProductDetails) && topProductDetails.length > 0) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product Image</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Category</th>
+                                    <!-- Add more table headers for additional details as needed -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% topProductDetails.forEach((product) => { %>
+                                    <tr>
+                                        <td><img src="/public/assetsNew/uploads/<%= product.productPhoto[0]?.filename %>" alt="<%= product.productName %>" class="product-image" style="max-width: 50px; max-height: 50px;"></td>
+                                        <td><h5><%= product.productName %></h5></td>
+                                        <td><h5><%= product.category %></h5></td>
+                                        <!-- Add more table cells for additional details as needed -->
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p>No top-selling products available.</p>
+                    <% } %>
+                </article>
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
+    <%- include('../layout/admin/footer') %>
+    <script>
+    let myChart; // Declare myChart outside the function to make it accessible globally
+
+        async function fetchSalesData(interval) {
+            try {
+                console.log("Selected interval: " + interval);
+
+                const response = await fetch(`/admin/sales-data?interval=${interval}`);
+
+                if (!response.ok) {
+                    console.error('Error fetching sales data. Server responded with:', response.status);
+                    throw new Error('Failed to fetch sales data');
+                }
+
+                const data = await response.json();
+                console.log("Fetched data:", data);
+
+                return data;
+            } catch (error) {
+                console.error('Error fetching sales data:', error.message);
+                throw error;
+            }
+        }
+
+        async function renderSalesChart(interval) {
+            try {
+                    const salesData = await fetchSalesData(interval);
+                    console.log('salesData', salesData);
+
+                    const ctx = document.getElementById('salesChartCanvas').getContext('2d');
+
+                    if (myChart) {
+                        // If myChart exists, update its data
+                        myChart.data.labels = salesData.labels;
+                        myChart.data.datasets[0].data = salesData.values;
+                        myChart.update();
+                    } else {
+                        // If myChart doesn't exist, create a new chart
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: salesData.labels,
+                                datasets: [{
+                                    label: 'Total Sales',
+                                    data: salesData.values,
+                                    fill: true,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+
+                                    tension: 0.2,
+                                }],
+                            },
+                            options: {
+                                plugins: {
+                                    legend: {
+                                        labels: {
+                                            usePointStyle: true,
+                                        },
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
+                } catch (error) {
+                    console.error('Error rendering sales chart:', error.message);
+                }
+        }
+
+        function handleFilterChange() {
+            try {
+                const intervalSelector = document.getElementById('intervalSelector');
+                const selectedInterval = intervalSelector.value;
+
+                console.log("Selected interval changed: " + selectedInterval);
+
+                if (!['daily', 'monthly', 'yearly'].includes(selectedInterval)) {
+                    console.error('Error: Invalid time interval');
+                    return;
+                }
+                renderSalesChart(selectedInterval);
+
+            } catch (error) {
+                console.error('Error handling filter change:', error.message);
+            }
+        }
+
+        const intervalSelector = document.getElementById('intervalSelector');
+        intervalSelector.addEventListener('change', handleFilterChange);
+
+        const defaultInterval = intervalSelector.options[0].value;
+        renderSalesChart(defaultInterval);
+   
+
+        
+        </script>

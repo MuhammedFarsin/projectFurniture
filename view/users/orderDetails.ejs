@@ -1,0 +1,221 @@
+<%- include("../layout/user/header") -%>
+
+<section style="margin: 60px;" class="content-main">
+    <!-- Header Section -->
+
+    <!-- Order Detail Section -->
+    <div class="card">
+      <!-- Order Header -->
+      <header class="card-header">
+        <!-- Order Info -->
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+            <span>
+              <i class="material-icons md-calendar_today"></i> <b>
+                <%= order.createdOn %>
+              </b>
+            </span> <br>
+            <small class="text-muted">Order ID: <%= order._id %></small>
+          </div>
+          <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+            <a class="btn btn-primary" href="/invoice?id=<%= order._id %>">invoice</a>
+
+            <a class="btn btn-primary" href="/profile">Save</a>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- Order Body -->
+      <div class="card-body">
+        <!-- Customer Info -->
+        <div class="row mb-50 mt-20 order-info-wrap">
+          <!-- Customer Section -->
+          <div class="col-md-4">
+            <!-- Customer Card -->
+            <article class="icontext align-items-start">
+              <!-- Customer Icon -->
+              <span class="icon icon-sm rounded-circle bg-primary-light">
+                <i class="text-primary material-icons md-person"></i>
+              </span>
+
+              <!-- Customer Text -->
+              <div class="text">
+                <h6 class="mb-1">Customer</h6>
+                <p class="mb-1">
+                  <%= user.name %> <br>
+                    <a href="mailto:<%= user.email %>">
+                      <%= user.email %>
+                    </a> <br>
+                    +91 <%= user.mobile %>
+                </p>
+                <a href="#">View profile</a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Order Information Section -->
+          <div class="col-md-4">
+            <!-- Order Information Card -->
+            <article class="icontext align-items-start">
+              <!-- Order Information Icon -->
+              <span class="icon icon-sm rounded-circle bg-primary-light">
+                <i class="text-primary material-icons md-local_shipping"></i>
+              </span>
+
+              <!-- Order Information Text -->
+              <div class="text">
+                <h6 class="mb-1">Order info</h6>
+                <p class="mb-1">
+                  Shipping: Fargo express <br>
+                  Pay method: <%= order.payment %> <br>
+                </p>
+                <a href="#">Download info</a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Delivery Information Section -->
+          <div class="col-md-4">
+            <!-- Delivery Information Card -->
+            <article class="icontext align-items-start">
+              <!-- Delivery Information Icon -->
+              <span class="icon icon-sm rounded-circle bg-primary-light">
+                <i class="text-primary material-icons md-place"></i>
+              </span>
+
+              <!-- Delivery Information Text -->
+              <div class="text">
+                <h6 class="mb-1">Deliver to</h6>
+                <p class="mb-1">
+
+                  <%= order.address.streetAddress %> <br>
+                    <%= order.address.city %><br>
+                      <%= order.address.zipcode %>
+                </p>
+                <a href="#">View profile</a>
+              </div>
+            </article>
+          </div>
+        </div> <!-- row // -->
+
+        <!-- Order Products Table -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th width="40%">Product</th>
+                    <th width="20%">Unit Price</th>
+                    <th width="20%">Quantity</th>
+
+                    <th width="20%" class="text-end">Total</th>
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Loop through order products -->
+                  <% if (order && order.products && order.products.length > 0) { %>
+                    <% for (let i = 0; i < order.products.length; i++) { %>
+                
+                      <tr>
+                        <td class="align-middle">
+                          <a class="itemside" href="#">
+                            <div class="left">
+                              <!-- Assuming you have an 'image' property in the product schema -->
+                              <img src="/public/assetsNew/uploads/<%=order.products[i].productId.image[0].filename %>" width="40"
+                                height="40" class="img-xs" alt="Item">
+                            </div>
+                            <div class="info">
+                              <%= order.products[i].productId.productName %>
+                            </div>
+                          </a>
+                        </td>
+                        <td class="align-middle">
+                          ₹<%= order.products[i].price %>
+                        </td>
+                        <td class="align-middle">
+                          <%= order.products[i].quantity %>
+                        </td>
+                
+                        <td class="text-end align-middle">
+                          <strong> ₹<%= order.products[i].price %></strong>
+                        </td>
+                        
+                      </tr>
+                
+                    <% } %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="5">No products in this order</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+                <tfoot>
+                  <tr>
+                      <td colspan="5">
+                          <% if (order.status === "Pending" || order.status === "Processing" || order.status === "Shipped") { %>
+                              <p>If you want to Cancel Your Order, click the button</p>
+                              <button class="btn btn-danger" onclick="confirmCancel('<%= order._id %>')">Cancel Order</button>
+                          <% } else if (order.status === "Cancelled") { %>
+                              Order Cancelled
+                          <% } else if (order.status === "Completed") { %>
+                              <p>If you want to Return Your Order, click the button</p>
+                              <button class="btn btn-primary" onclick="confirmReturn('<%= order._id %>')">Return Order</button>
+                          <% } else if (order.status === 'Return') { %>
+                              Order Returned
+                          <% } %>
+                      </td>
+                  </tr>
+              </tfoot>
+
+              </table>
+
+            </div> <!-- table-responsive// -->
+          </div> <!-- col// -->
+
+          <!-- Additional Info Section -->
+          <!-- col// -->
+        </div> <!-- row // -->
+      </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+
+  </section>
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Cancel Order</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this order?
+      </div>
+      <div class="modal-footer">
+        <button  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="confirmBtn" type="button" class="btn btn-danger">Confirm Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="returnConfirmationModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="returnModalLabel">Confirm Return Order</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to return this order?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="confirmReturnBtn" type="button" class="btn btn-primary">Confirm Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include("../layout/user/footer") -%>

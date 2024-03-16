@@ -1,0 +1,46 @@
+<%- include("../layout/user/header") %>
+<div class="col-md-6" style="margin-left: 25%">
+    <div class="mb-25">
+        <h4>Address</h4>
+    </div>
+    <form id="addressForm" action="/edit-userProfileAddress?id=<%= address._id %>" method="post" onsubmit="return validate()">
+        <div class="form-group">
+            <input type="text" required id="firstName" name="firstName" pattern="[a-zA-Z\s]+" placeholder="First name *" value="<%= address.firstName %>">
+            <p class="text-center error" id="firstNameError"></p>
+        </div>
+        <div class="form-group">
+            <input type="text" required id="lastName" name="lastName" pattern="[a-zA-Z\s]+" placeholder="Last name *" value="<%= address.lastName %>">
+            <p class="text-center error" id="lastNameError"></p>
+        </div>
+        <div class="form-group">
+            <input required type="text" id="city" name="city" pattern="[a-zA-Z\s]+" placeholder="City / Town *" value="<%= address.city %>">
+            <p class="text-center error" id="cityError"></p>
+        </div>
+        <div class="form-group">
+            <input required type="text" id="streetAddress" name="streetAddress" pattern="[a-zA-Z0-9\s,'-]+" placeholder="Street Address *" value="<%= address.streetAddress %>">
+            <p class="text-center error" id="streetAddressError"></p>
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="state" placeholder="State / County *" value="<%= address.state %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" id="zipCode" name="zipcode" placeholder="Postcode / ZIP *" value="<%= address.zipcode %>">
+            <p class="text-center" id="zipCodeError" ></p>
+        </div>
+        <div class="form-group">
+            <input required="" type="text" id="phoneNumber" name="phone" placeholder="Phone *" value="<%= address.phone %>">
+            <p class="text-center" id="phoneNumberError" ></p>
+        </div>
+        <div class="form-group">
+            <input required="" type="text" id="email" name="email" placeholder="Email address *" value="<%= address.email %>">
+            <p class="text-center" id="emailError" ></p>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-fill-out submit"> Save </button>
+        </div>
+       
+    </form>
+</div>
+
+<%- include("../layout/user/footer") %>

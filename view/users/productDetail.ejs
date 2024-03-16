@@ -1,0 +1,154 @@
+<%- include("../layout/user/header") -%>
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> shop
+                
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product-detail accordion-detail">
+                        <div class="row mb-50">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="detail-gallery">
+                                    <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                    <!-- MAIN SLIDES -->
+                                    <div class="product-image-slider">
+                                        <% products.image.forEach((image, index) => { %>
+                                            <figure class="border-radius-10">
+                                                <img src="/public/assetsNew/uploads/<%= image.filename %>" alt="Slide <%= index + 1 %>" style="width:550px; height: 400%;">
+                                            </figure>
+                                        <% }) %>
+                                    </div>
+                                    
+                                    <!-- THUMBNAILS -->
+                                    <div class="slider-nav-thumbnails pl-15 pr-15">
+                                        <% products.image.forEach((image, index) => { %>
+                                            <div><img src="/public/assetsNew/uploads/<%= image.filename %>" alt="Slide <%= index + 1 %>" alt="product image"></div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                                <!-- End Gallery -->
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="detail-info">
+                                    <h2 class="title-detail"><%= products.productName %></h2>
+                                    <div class="product-detail-rating">
+                                        
+                                        <div class="product-rate-cover text-end">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width:90%">
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="clearfix product-price-cover">
+                                        <div class="product-price primary-color float-left">
+                                            <ins><span class="text-brand">₹<%= products.salePrice %></span></ins>
+                                    </div>
+                                    </div>
+                                    <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                    <div class="short-desc mb-30">
+                                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!</p>
+                                    </div>
+                                    <div class="product_sort_info font-xs mb-30">
+                                        <ul>
+                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand Warranty</li>
+                                            <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy</li>
+                                            <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="attr-detail attr-size">
+                                        
+                                    </div>
+                                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                    <div class="detail-extralink">
+                                        <form class="cart clearfix" id="addToCartForm" data-product-id="<%= products._id %>">
+                                            <div class="cart-btn d-flex mb-50">
+                                              
+                                                <div class="quantity">
+                                                    <p>Qty</p>
+                                                    <input
+                                                        type="number"
+                                                        class="qty-text"
+                                                        id="qty"
+                                                        step="1"
+                                                        min="1"
+                                                        max="300"
+                                                        name="quantity"
+                                                        value="1"
+                                                        oninput="validateQuantity(this)"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                                                              
+                                         <div class="product-extra-link2">
+                                            <button type="button" class="button button-add-to-cart"  onclick="addToCartDetails('<%= products._id %>')">Add to cart</button>
+                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                            <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                        </div>
+                                    </form>  
+                                    </div>
+                                    
+                                </div>
+                                <!-- Detail Info -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-10 m-auto entry-main-content">
+                                <h2 class="section-title style-1 mb-30">Description</h2>
+                                <div class="description mb-50">
+                                    <p>Uninhibited carnally hired played in whimpered dear gorilla koala depending and much yikes off far quetzal goodness and from for grimaced goodness unaccountably and meadowlark near unblushingly crucial scallop
+                                        tightly neurotic hungrily some and dear furiously this apart.</p>
+                                    <p>Spluttered narrowly yikes left moth in yikes bowed this that grizzly much hello on spoon-fed that alas rethought much decently richly and wow against the frequent fluidly at formidable acceptably flapped
+                                        besides and much circa far over the bucolically hey precarious goldfinch mastodon goodness gnashed a jellyfish and one however because.
+                                    </p>
+                                   
+                                    <hr class="wp-block-separator is-style-dots">
+                                    <p>Laconic overheard dear woodchuck wow this outrageously taut beaver hey hello far meadowlark imitatively egregiously hugged that yikes minimally unanimous pouted flirtatiously as beaver beheld above forward
+                                        energetic across this jeepers beneficently cockily less a the raucously that magic upheld far so the this where crud then below after jeez enchanting drunkenly more much wow callously irrespective limpet.</p>
+                                    <h4 class="mt-30">Packaging & Delivery</h4>
+                                    <hr class="wp-block-separator is-style-wide">
+                                    <p>Less lion goodness that euphemistically robin expeditiously bluebird smugly scratched far while thus cackled sheepishly rigid after due one assenting regarding censorious while occasional or this more crane
+                                        went more as this less much amid overhung anathematic because much held one exuberantly sheep goodness so where rat wry well concomitantly.
+                                    </p>
+                                    <p>Scallop or far crud plain remarkably far by thus far iguana lewd precociously and and less rattlesnake contrary caustic wow this near alas and next and pled the yikes articulate about as less cackled dalmatian
+                                        in much less well jeering for the thanks blindly sentimental whimpered less across objectively fanciful grimaced wildly some wow and rose jeepers outgrew lugubrious luridly irrationally attractively
+                                        dachshund.
+                                    </p>
+                                </div>
+                                <h3 class="section-title style-1 mb-30">Additional info</h3>
+                                
+                                <div class="social-icons single-share">
+                                    <ul class="text-grey-5 d-inline-block">
+                                        <li><strong class="mr-10">Share this:</strong></li>
+                                        <li class="social-facebook"><a href="#"><img src="/public/assetsNew/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
+                                        <li class="social-twitter"> <a href="#"><img src="/public/assetsNew/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
+                                        <li class="social-instagram"><a href="#"><img src="/public/assetsNew/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
+                                        <li class="social-linkedin"><a href="#"><img src="/public/assetsNew/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
+                                    </ul>
+                                </div>                                    <!--comment form-->
+                                
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include("../layout/user/footer") -%>
+   

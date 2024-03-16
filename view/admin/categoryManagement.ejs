@@ -1,0 +1,129 @@
+<%- include("../layout/admin/header") %>
+
+
+
+    <section class="content-main">
+        <!-- category management -->
+
+        <div id="category-management" class="row">
+          <!-- Add New Category Card -->
+          
+      
+          <!-- Existing Category Management Card -->
+          <div class="card mb-4 mr-5 col-lg-12">
+            <header class="card-header">
+                <h4 class="card-title">Category Management</h4>
+                <div class="text-end">
+                  <a href="/admin/category/add-new-category" class="btn btn-primary btn-sm"> + Add New Category</a>
+              </div>
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle" scope="col">Category Name</th>
+                                <th class="align-middle" scope="col">Date Created</th>
+                                <th class="align-middle" scope="col">Listed</th>
+                                <th class="align-middle" scope="col">Edit</th>
+                                <th class="align-middle" scope="col">Delete</th>
+                                <th class="align-middle" scope="col">Apply Offer</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTable" >
+                            <% if (category.length > 0) { %>
+                                <% for (let i = 0; i < category.length; i++) { %>
+                                    <tr id="category-<%= category[i]._id %>">
+                                        <td><%= category[i].categoryName %></td>
+                                        <td><%= category[i].createdOn.toLocaleString() %></td>
+                                        <td><%= category[i].listed === true ? "Listed" : "UnListed" %></td>
+                                        <td>
+                                            <a href="/admin/category/edit-category?id=<%= category[i]._id %>">
+                                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" onclick="confirmDelete('<%= category[i]._id %>')">
+                                                <i class="fa-solid fa-trash"></i> Delete
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <% if (category[i].categoryOffer) { %>
+                                                <a href="#" id="offerButton"
+                                                    onclick="removeOfferCategory('<%= category[i]._id %>')"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#removeOfferModal<%= category[i]._id %>">
+                                                    <i class="fa-solid fa-eraser"
+                                                        style="color: #088178;"></i> Remove offer
+                                                </a>
+                                                <% } else { %>
+                                                    <a href="#" id="offerButton" data-bs-toggle="modal" data-bs-target="#offerModal<%= category[i]._id %>">
+                                                        <i class="fa-solid fa-tags"></i> Apply Offer
+                                                     </a>
+                                                    <% } %>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
+        </div>
+        
+        <!-- Add New Category Button -->
+      
+
+             <!-- Bootstrap modal for confirmation -->
+             <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this item?</p>
+    
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a id="deleteButton" href="#" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% for( let i=0 ; i < category.length ; i++ ) { %>
+                <div class="modal fade" id="offerModal<%= category[i]._id %>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <!-- Add your offer form fields here -->
+                                <label for="offerInput">Offer Percentage:</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="offerInput<%= category[i]._id %>"
+                                        placeholder="Enter offer percentage">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+    
+    
+    
+                                <button type="button" class="btn btn-primary" onclick="submitCategoryOffer('<%= category[i]._id %>')">Apply Category Offer</button>
+    
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+<%- include("../layout/admin/footer")%>

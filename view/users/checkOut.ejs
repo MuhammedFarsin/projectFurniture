@@ -1,0 +1,243 @@
+<%- include("../layout/user/header") -%>
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Checkout
+            </div>
+        </div>
+    </div>
+
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <% if (!address || address.length === 0) { %>
+                    <div class="col-lg-6 mb-sm-15">
+                        <div class="toggle_info">
+                            <span>
+                                <i class="fi-rs-user mr-10"></i>
+                                <span class="text-muted">If you don't have Address</span>
+                                <a href="/add-address" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">
+                                    Click here to Create Address
+                                </a>
+                            </span>
+                        </div>
+                        <a href="/add-address">
+                            <button class="btn btn-fill-out submit">Add Address</button>
+                        </a>
+                    </div>
+                <% } else { %>
+                    <form id="orderFormData">
+                        <% address.forEach(address => { %>
+                            <div class="col-lg-6">
+                                <div class="toggle_info">
+                                
+                                    <input class="form-check-input" type="radio" name="address" value="<%= address._id %>">
+                                    <span>
+                                        <i class="fi-rs-label mr-10"></i>
+                                        <span class="text-muted">Billing Address</span>
+                                    </span>
+                                    <div class="card mb-3 mb-lg-0">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Billing Address</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <address>
+                                                <%= address.firstName %><br>
+                                                <%= address.city %><br>
+                                                <%= address.zipcode %> <br>
+                                            </address>
+                                            <p><%= address.state %></p>
+                                            <a href="/edit-address?id=<%= address._id %>" class="btn-small">Edit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                     
+                       
+                    
+                <% } %>
+            </div>
+             <div class="row">
+                <div class="col-12">
+                    <div class="divider mt-50 mb-50"></div>
+                </div>
+            </div>
+            <p id="couponDiscount"><span>Coupon Discount:</span> <span
+                id="couponDiscountAmount"></span></p>
+            <div class="col-lg-6 mb-sm-15">
+                <div class="form-group">
+                    <label for="couponCode">Coupon Code:</label>
+                    <div class="input-group-append">
+                        <input type="text" id="couponCode" style="width: 190px; height: 45px;" name="couponCode"
+                            placeholder="Coupon code">
+                            <span>
+                                <a class="btn btn-warning" onclick="applyCoupon()">Apply</a>
+                            </span>
+                        
+                    </div>
+                    <p id="couponMessage" class="text-danger"></p>
+                    <a id="removeCoupon" href="#" onclick="removeCoupon()" style="display: none;">Remove Coupon</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="divider mt-50 mb-50"></div>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="order_review">
+                        <div class="mb-20">
+                            <h4>Your Orders</h4>
+                        </div>
+                        <div class="table-responsive order_table text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let totalSubTotal = 0; %>
+                                    <% if (cart.length > 0) { %>
+                                        <% for (let i = 0; i < cart.length; i++) { %>
+                                            <tr>
+                                                <td class="image product-thumbnail">
+                                                    <img src="/public/assetsNew/uploads/<%= products[i]?.image[0]?.filename %>" alt="#">
+                                                </td>
+                                                <td>
+                                                    <% if (products[i]) { %>
+                                                        <h5><a href="shop-product-full.html"><%= products[i].productName %></a></h5>
+                                                        <span class="product-qty"><%= cart[i].quantity %></span>
+                                                        <% let productSubTotal = products[i].salePrice * cart[i].quantity %>
+                                                        <td>₹<%= productSubTotal %></td>
+                                                        <% totalSubTotal += productSubTotal %>
+                                                    <% } else { %>
+                                                        <p>Product not found</p>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="3" class="text-center">Your cart is empty.</td>
+                                        </tr>
+                                    <% } %>
+                                    <tr>
+                                        <th>SubTotal</th>
+                                        <td class="product-subtotal" id="subtotal" colspan="2">₹<%= totalSubTotal.toFixed(2) %></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td colspan="2" class="product-subtotal font-xl text-brand fw-900" id="total">₹<%= totalSubTotal.toFixed(2) %></td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                        
+                        
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                        <div class="payment_method">
+                            <div class="mb-25">
+                                <h5>Payment</h5>
+                            </div>
+                            <div class="payment_option">
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment" id="cod" value="Cash on Delivery" checked>
+                                    <label class="form-check-label" for="cod">Cash On Delivery</label>
+                                </div>
+                            </div>
+                            <div class="payment_option">
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment" id="Razorpay"  checked>
+                                    <label class="form-check-label" for="Razorpay">Online payment</label>
+                                </div>
+                            </div>
+                            <div class="payment_option">
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment" id="wallet" checked>
+                                    <label class="form-check-label" for="wallet">Wallet</label>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                     
+                        <a  id="checkout" class="btn btn-fill-out btn-block mt-30" onclick="checkout('<%= address.length %>',' <%= cart.length %>')">Place Order</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+        </div>
+    </section>
+</main>
+
+<section class="coupon-section mt-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-20">
+                    <h4>Available Coupons</h4>
+                </div>
+                <!-- Button to show the coupon modal -->
+                <button id="showCouponModalBtn" class="btn btn-info" data-bs-toggle="modal"
+                    data-bs-target="#couponModal">Show Available Coupons</button>
+
+                <!-- Coupon Modal -->
+                <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="couponModalLabel">Exclusive Offer</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <% for (let i=0; i < coupon.length; i++) { %>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Awesome Deal</h5>
+                                            <p class="card-text">COUPON NAME:<%= coupon[i].name %>
+                                            </p>
+                                            <p class="card-text">Expires on:<%=
+                                                    coupon[i].expiryDate.toLocaleDateString() %>
+                                            </p>
+                                            <p class="card-text">Use code: <%= coupon[i].code %>
+                                                
+                                            </p>
+                                            <p class="card-text">Offer:<%= coupon[i].discount %>%
+                                            </p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-success copyCouponBtn"
+                                                data-coupon-code="<%= coupon[i].code %>">Copy Coupon
+                                                Code</button>
+                                            <!-- Input field for copying the code -->
+                                            <input type="text" class="copyInput"
+                                                value="<%= coupon[i].code %>"
+                                                style="position: absolute; left: -9999px;">
+                                        </div>
+                                    </div>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<%- include("../layout/user/footer") -%>

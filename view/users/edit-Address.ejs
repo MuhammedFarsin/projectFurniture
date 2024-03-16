@@ -1,0 +1,53 @@
+<%- include("../layout/user/header") %>
+<div class="col-md-6" style="margin-left: 25%">
+    <div class="mb-25">
+        <h4>Address</h4>
+    </div>
+    <form action="/edit-address?id=<%= address._id %>" method="post">
+        <div class="form-group">
+            <input type="text" required="" name="firstName" placeholder="First name *" value="<%= address.firstName %>" >
+        </div>
+        <div class="form-group">
+            <input type="text" required="" name="lastName" placeholder="Last name *" value="<%= address.lastName %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="city" placeholder="City / Town *" value="<%= address.city %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="streetAddress" placeholder="streetAddress *" value="<%= address.streetAddress %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="state" placeholder="State / County *" value="<%= address.state %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" value="<%= address.zipcode %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="phone" placeholder="Phone *" value="<%= address.phone %>">
+        </div>
+        <div class="form-group">
+            <input required="" type="text" name="email" placeholder="Email address *" value="<%= address.email %>">
+        </div>
+        <div class="ship_detail">
+            <div class="form-group">
+                <div class="chek-form">
+                    <div class="custome-checkbox">
+                        <input class="form-check-input" type="checkbox" name="checkbox" id="differentaddress">
+                        <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a different address?</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-fill-out submit"> Save </button>
+        </div>
+        <div class="mb-20">
+            <h5>Additional information</h5>
+        </div>
+        <div class="form-group mb-30">
+            <textarea rows="5" placeholder="Order notes"></textarea>
+        </div>
+    </form>
+</div>
+
+<%- include("../layout/user/footer") %>

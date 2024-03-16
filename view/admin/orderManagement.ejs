@@ -1,0 +1,92 @@
+<%- include("../layout/admin/header")%>
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List </h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div>
+            <input type="text" placeholder="Search order ID" class="form-control bg-white">
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control">
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Order Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle" scope="col">Order ID</th>
+                                <th class="align-middle" scope="col">Billing Name</th>
+                                <th class="align-middle" scope="col">Date</th>
+                                <th class="align-middle" scope="col">Total</th>
+                                <th class="align-middle" scope="col">Payment Method</th>
+                                <th class="align-middle" scope="col">Order Status</th>
+                                <th class="align-middle" scope="col">View Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% order.forEach(order => { %>
+                                <tr>
+                                    <td><a href="#" class="fw-bold">#<%= order._id %></a></td>
+                                    <td><%= order.user.name %></td>
+                                    <td><%= order.date %></td>
+                                    <td><%= order.totalPrice %></td>  
+                                    <td><%= order.payment %></td>
+                                   
+                                        <td>
+                                            <% if(order.status === 'Pending') { %>
+                                                <span class="badge rounded-pill alert-warning">Pending</span>
+                                            <% } else if (order.status === 'Cancelled') { %>
+                                                <span class="badge rounded-pill alert-danger">Cancelled</span>
+                                            <% } else if (order.status === 'Return') { %>
+                                                <span class="badge rounded-pill alert-info">Return</span>
+                                            <% } else if (order.status === 'Completed') { %>
+                                                <span class="badge rounded-pill alert-success">Completed</span>
+                                            <% } else { %>
+                                                <!-- Handle other statuses here -->
+                                                <span class="badge rounded-pill alert-info"><%= order.status %></span>
+                                            <% } %>
+                                        </td>
+                                 
+                                    <td class="text-end">
+                                        <a href="/admin/view-orderDetails/<%= order._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- table-responsive end// -->
+        </div>
+    </div> <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-start">
+          </ul>
+        </nav>
+      </div>
+</section>
+<%- include("../layout/admin/footer")%>

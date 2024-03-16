@@ -1,0 +1,85 @@
+<%- include('../layout/loginpage/header') %>
+
+<div class="products-catagories-area  ">
+    <div class="amado-pro-catagory ">
+          <div class="wrap-login100">
+        <form
+          action="/checkOTPpass"
+          method="post"
+          class="login100-form validate-form p-l-55 p-r-55 p-t-178"
+          onsubmit="return validateForm();"
+        >
+          <span class="login100-form-title">Verify Reset Password </span>
+  
+          <div class="text-center m-b-16">
+            Please Check Your Email for the Verification Code.
+          </div>
+  
+          <% if (typeof message !== "undefined" ) { %>
+          <div id="message" class="text-center error m-b-16">
+            <%= message %>
+          </div>
+          <% } %>
+  
+          <div
+            class="wrap-input100 validate-input m-b-16"
+            data-validate="Please enter otp"
+          >
+            <input
+              class="input100"
+              type="number"
+              name="otp"
+              placeholder="Enter OTP Here"
+              id="inputOtp"
+              required
+            />
+            <span class="focus-input100"></span>
+          </div>
+  
+          <div class="container-login100-form-btn">
+            <button id="verify" type="submit" class="login100-form-btn" onclick=" passwordOTPForm()">
+              Verify
+            </button>
+          </div>
+  
+          <div class="row">
+            <div class="col-auto mr-auto" id="timeoutDisplay"></div>
+  
+            <div id="resendOtp" class="flex-col-c p-t-20 p-b-20 col-auto">
+              <a href="/resend-otp" class="txt3" onclick="resendOtp()">
+                resend otp
+              </a>
+            </div>
+          </div>
+          <br /><br />
+          <div class="flex-col-c p-t-8 p-b-40">
+            <a href="/login" class="txt3">
+              <i class="fa-solid fa-arrow-left"></i>back to home
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/public/javascript/jquery/jquery-2.2.4.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="vendor/animsition/js/animsition.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="vendor/bootstrap/js/popper.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="vendor/select2/select2.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="vendor/daterangepicker/moment.min.js"></script>
+  <script src="vendor/daterangepicker/daterangepicker.js"></script>
+  <!--===============================================================================================-->
+  <script src="vendor/countdowntime/countdowntime.js"></script>
+  <!--===============================================================================================-->
+  <script src="/public/javascript/main.js"></script>
+  <!--===============================================================================================-->
+  <script src="/public/javascript/showPassword.js"></script>
+
+  <%- include('../layout/loginpage/footer') %>

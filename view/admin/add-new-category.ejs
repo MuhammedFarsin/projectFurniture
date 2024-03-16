@@ -1,0 +1,43 @@
+
+<%- include("../layout/admin/header") %>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <header class="card-header">
+                        <h4 class="card-title">Add Category</h4>
+
+                        <% if (typeof message !== "undefined" ) { %>
+                            <div id="message" class="text-center error text-danger m-b-16"><%= message %></div>
+                        <% } %>
+                    </header>
+                    <div class="col-md-12" id="categoryTable">
+                        <form id="myForm" onsubmit="addNewCategory(); return false;">
+                            <div class="mb-10">
+                                <label class="form-label">Category Name</label>
+                                <input name="categoryName" type="text" placeholder="Type here" class="form-control" required>
+                            </div>
+
+                            <label class="form-label">List/Unlist</label>
+                            <div class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" checked="" name="list-unlist" value="list" type="radio">
+                                <span class="form-check-label"> List </span>
+                            </div>
+                            <div class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" name="list-unlist" value="unlist" type="radio">
+                                <span class="form-check-label"> Unlist </span>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-md rounded font-sm hover-up" style="width: 100%;">Add New Category</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include("../layout/admin/footer") %>

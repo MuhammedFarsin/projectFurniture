@@ -1,0 +1,134 @@
+<%- include("../layout/user/header") -%>
+
+<section class="content-main">
+    <div class="content-header">
+        <br>
+        <br>
+        <div class="text-center"> <!-- Centering content -->
+            <h2 class="content-title card-title">Invoice</h2>
+            <p>Details for Order ID: <%= order._id %>
+            </p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12">
+            <div class="card">
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <span>
+                                <i class="material-icons md-calendar_today"></i>
+                                <b>
+                                    <%= order.createdOn.toLocaleDateString() %>
+                                </b>
+                            </span>
+                            <br>
+                            <small class="text-muted">Order ID:<%= order._id %> </small>
+                        </div>
+                        <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                            <a class="btn btn-primary" href="/saveinvoice?id=<%= order._id %>">
+                                <i class="icon material-icons md-cloud_download mr-5"></i>Save PDF
+                            </a>
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+
+                <br><br>
+                <div class="card-body">
+                    <div class="receipt-content">
+                        <div class="container bootstrap snippets bootdey">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="invoice-wrapper">
+                                        <div class="intro">
+                                            Hi <strong><%= user.name %></strong>,
+                                            <br>
+                                            This is the receipt for a payment of
+                                            <strong>$<%= calculateTotalPayment(order.products) %></strong>
+                                            (USD) for your works
+                                        </div>
+                                        
+                                        <% function calculateTotalPayment(products) { %>
+                                            <% let total = 0; %>
+                                            <% if (Array.isArray(products) && products.length) { %>
+                                                <% for (let i = 0; i < products.length; i++) { %>
+                                                    <% if (products[i] && products[i].price && products[i].quantity) { %>
+                                                        <% total += parseFloat(products[i].price * products[i].quantity); %>
+                                                    <% } %>
+                                                <% } %>
+                                            <% } %>
+                                            <% return (isFinite(total) && total > 0) ? total.toFixed(2) : '0.00'; %>
+                                        <% } %>
+
+                                        <!-- ... (omitting some sections for brevity) ... -->
+
+                                        <div class="line-items">
+                                            <div class="headers clearfix">
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-4">Product</div>
+                                                    <div class="col-md-3">Quantity</div>
+                                                    <div class="col-md-5 text-end">Amount</div>
+                                                </div>
+                                            </div>
+                                            <% let totalSubTotal = 0 %>
+                                            <% for (let i = 0; i < order.products.length; i++) { %>
+                                                <div class="items">
+                                                    <div class="row item">
+                                                        <div class="col-md-4 desc">
+                                                            <%= order.products[i].productId.productName %>,
+                                                        </div>
+                                                        <div class="col-md-3 qty">
+                                                            <%= order.products[i].quantity %>
+                                                        </div>
+                                                        <div class="col-md-5 amount text-end">
+                                                            <strong>
+                                                            ₹ <%= order.products[i].price %>
+                                                            <% totalSubTotal += parseFloat(order.products[i].price * order.products[i].quantity) %>
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <% } %>
+
+                                        <br><br><br><br><br>
+                                        <div class="total text-first">
+                                            <p class="extra-notes">
+                                                <strong>Extra Notes : </strong> Please send all items at the
+                                                same time to the
+                                                shipping address by next week. Thanks a lot.
+                                            </p>
+                                        </div>
+                                        <br>
+                                        <div class="total text-first">
+                                            <div class="field">
+                                                Subtotal  <span>₹ <%= totalSubTotal.toFixed(2) %> </span>
+                                            </div>
+                                            <div class="field">
+                                                Shipping <span>₹0.00</span>
+                                            </div>
+
+                                            <div class="field grand-total">
+                                                Total <strong><span>₹ <%= totalSubTotal.toFixed(2) %></span></strong>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="footer">
+                                    <br><br><br>
+                                    @evara
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<br><br><br><br><br><br><br>
+
+<%- include("../layout/user/footer") -%>

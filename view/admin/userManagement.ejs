@@ -1,0 +1,64 @@
+<%- include("../layout/admin/header") %>
+        <section class="content-main">
+              <!-- user management -->
+              <div class="card mb-4">
+                <header class="card-header">
+                    <h4 class="card-title">User Management</h4>
+                </header>
+                <div id="user-management" class="card-body">
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="align-middle" scope="col">User ID</th>
+                                        <th class="align-middle" scope="col">User Name</th>
+                                        <th class="align-middle" scope="col">User Email</th>
+                                        <th class="align-middle" scope="col">User Mobile Number</th>
+                                        <th class="align-middle" scope="col">Block User</th>
+                                    </tr>
+                                            <% if (user.length>0) { %>
+                                                <% for( let i = 0; i < user.length; i++ ) { %>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="#" class="fw-bold"><%= user[i]._id %></a> </td>
+                                                        <td><%= user[i].name %></td>
+                                                        <td>
+                                                            <%= user[i].email %>
+                                                        </td>
+                                                        <td>
+                                                            <%= user[i].mobile %>
+                                                        </td>
+                                                        <td id="<%= user[i]._id %>">
+                                                            <a onclick="blockOrUnBlockUser('<%= user[i]._id %>')" class="btn btn-xs"><%= user[i].is_blocked ? " Unblock " : " Block " %></a>
+                                                          </td>
+                                                    </tr>
+                                                <% } %>
+                                            <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- table-responsive end// -->
+                </div>
+            </div>
+        </section>
+        <div class="modal fade" id="blockConfirmationModal" tabindex="-1" aria-labelledby="blockConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="blockConfirmationModalLabel">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmationMessage">Are you sure you want to block this user?</p>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a id="userBlockButton" href="#" class="btn btn-danger" data-block-status="block">Block</a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- content-main end// -->
+    <%- include("../layout/admin/footer") -%>

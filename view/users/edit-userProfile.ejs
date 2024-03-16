@@ -1,0 +1,57 @@
+<%- include("../layout/user/header") %>
+<section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Profile setting </h2>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row gx-5">
+               
+                <div class="col-lg-9">
+                    <section class="content-body p-xl-4">
+                        <form method="post">
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="row gx-16">
+                                        <div class="col-8 mb-3">
+                                            <label class="form-label">Name</label>
+                                            <input class="form-control" type="text" name="name" placeholder="Type here" value="<%= user.name %>" >
+                                        </div> <!-- col .// -->
+                                        <!-- col .// -->
+                                        <div class="col-lg-8  mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control" type="email" name="email" placeholder="example@mail.com" value="<%= user.email %>" >
+                                        </div> <!-- col .// -->
+                                        <div class="col-lg-8  mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input class="form-control" type="number" name="mobile" placeholder="+1234567890" value="<%= user.mobile %>">
+                                        </div>
+                                        <h6>Address</h6>
+                                        <a href="/edit-userProfileAddress?id=<%= user._id %>" class="form-label">Click Here To Change Your Address<!-- col .// -->         
+                                     <!-- col .// -->
+                                        </a>
+                                        <div class="col-md">
+                                            <article class="box mb-3 bg-light">
+                                                <a class="btn float-end btn-light btn-sm rounded font-md" href="/edit-userProfilePassword?id=<%= user._id %>">Change Password</a>
+                                                <h6>Password</h6>  
+                                                    You can reset or change your password by clicking
+                                            </article>
+                                        </div>
+                                      
+                                    </div> <!-- row.// -->
+                                </div> <!-- col.// -->
+                                
+                            </div> <!-- row.// -->
+                            <br>
+                            <button class="btn btn-primary" type="submit">Save changes</button>
+                        </form>
+                       
+                         <!-- row.// -->
+                    </section> <!-- content-body .// -->
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card body end// -->
+    </div> <!-- card end// -->
+</section> 
+<%- include("../layout/user/footer") %>

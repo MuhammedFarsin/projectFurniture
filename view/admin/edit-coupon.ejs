@@ -1,0 +1,70 @@
+<%- include("../layout/admin/header") %>
+
+<section class="content-main">
+    <div class="row">
+        <div class="col-12">
+            <div class="content-header col-8">
+                <h2 class="content-title">Add New Coupon</h2>
+            </div>
+            <div class="col-lg-10">
+                <form action="/admin/edit-coupon?id=<%= coupon._id %>" method="post" onsubmit="return validateForm();">
+                    <div class="mb-4">
+                        <label for="couponName" class="form-label">Coupon name</label>
+                        <input type="text" placeholder="Type here" name="name" class="form-control" value="<%= coupon.name %>"
+                            id="couponName">
+                        <p id="nameError" class="text-danger"></p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="couponDescription" class="form-label">Coupon code</label>
+                        <input type="text" placeholder="Type here" name="couponCode" value="<%= coupon.code %>"
+                            class="form-control" id="couponDescription">
+                        <div>
+
+                            <% if (typeof message!=='undefined' ) { %>
+
+                                <%= message %>
+                                    <% console.log( message) %>
+
+                                        <% } %>
+                        </div>
+                        <p id="couponCodeError" class="text-danger"></p>
+
+                    </div>
+
+                    <div class="row gx-3">
+                        <div class="mb-4 col-md-6">
+                            <label for="percentageDiscount" class="form-label">Percentage
+                                Discount</label>
+                            <div class="input-group">
+                                <input type="number" placeholder="Type here" name="discount" value="<%= coupon.discount %>"
+                                    class="form-control" id="discount" step="0.01" min="0">
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <p id="percentageDiscountError" class="text-danger"></p>
+                        </div>
+
+                        <div class="mb-4 col-md-6">
+                            <label for="minimumAmount" class="form-label">Minimum Amount</label>
+                            <input type="text" placeholder="Type here" name="minimumAmount" value="<%= coupon.minimumAmount %>"
+                                class="form-control" id="minimumAmount" step="0.01" min="0">
+                            <p id="minimumAmountError" class="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                        <input type="date" placeholder="Type here" name="expiryDate" value="<%= coupon.expiryDate %>"
+                            class="form-control" id="expiryDate">
+                        <p id="expiryDateError" class="text-danger"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-md rounded font-sm hover-up">Save
+                        Coupon</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include("../layout/admin/footer") %>
