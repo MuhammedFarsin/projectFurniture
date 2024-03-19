@@ -100,7 +100,8 @@ user_route.delete("/user-profile/delete-address", auth.isLogin, addressControlle
 user_route.put("/order-cancel/:orderId",auth.isLogin,orderController.orderCancel)
 user_route.put("/order-return/:orderId",auth.isLogin,orderController.ReturnOrder)
 
-
+user_route.get("/about",auth.isLogin,userController.renderAboutPage)
+user_route.get("/contact",auth.isLogin,userController.renderContactPage)
 
 user_route.get("/logout",auth.isLogin,userController.userLogout)
 

@@ -612,12 +612,30 @@ const downloadInvoice = async(req,res)=>{
         console.log(error.message);
     }
 }
+const renderAboutPage = async(req,res)=>{
+    try {
+        res.render("about")
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const renderContactPage = async(req,res)=>{
+    try {
+        res.render("contact")
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 
 module.exports = {
     loadSignUp,
     UsersignUp,
+    renderAboutPage,
+    renderContactPage,
     loginload,
     loadforgetPassword,
     verifylogin,
