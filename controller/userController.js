@@ -37,10 +37,14 @@ const otpCheck={};
 const sendVerifyMail = async (email) => {
     try {
         // Generate a random four-digit code
+        console.log('THIS IS EMAIL',process.env.EMAIL);
+        console.log(process.env.PASSWORD);
         const otp = Math.floor(1000 + Math.random() * 9000);
         otpCheck[email] = otp;
         console.log(otpCheck);
+        console.log('test')
         const transporter = nodemailer.createTransport(config.nodemailer);
+        console.log(transporter)
         const mailOptions = {
             from: config.nodemailer.auth.user,
             to: email,
@@ -53,7 +57,7 @@ const sendVerifyMail = async (email) => {
         let info = await transporter.sendMail(mailOptions);
         console.log('Email has been sent...', info.response);
     } catch (error) {
-        console.log(error.message);
+        console.log('error from node mailer'+error.message);
     }
 };
 
