@@ -232,7 +232,7 @@ const CashOnDelivery = async(req,res)=>{
         const orderData = await Order.findById(orderId).populate("user")
         .populate("products.productId")
 
-        res.render("AdminOrderView",{
+        res.render("adminOrderView",{
           order : orderData,
          
         })
