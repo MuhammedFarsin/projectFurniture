@@ -9,6 +9,7 @@ const Wallet = require("../model/walletModel")
 const Razorpay = require("razorpay");
 const Wishlist = require("../model/wishlistModel");
 const Coupon = require("../model/couponModel");
+require('dotenv').config();
 
 const RazorPayInstance = new Razorpay({
   key_id: process.env.YOUR_ID_KEY,

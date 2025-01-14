@@ -37,14 +37,14 @@ const otpCheck={};
 const sendVerifyMail = async (email) => {
     try {
         // Generate a random four-digit code
-        console.log('THIS IS EMAIL',process.env.EMAIL);
-        console.log(process.env.PASSWORD);
+        // console.log('THIS IS EMAIL',process.env.EMAIL);
+        // console.log(process.env.PASSWORD);
         const otp = Math.floor(1000 + Math.random() * 9000);
         otpCheck[email] = otp;
-        console.log(otpCheck);
-        console.log('test')
+        // console.log(otpCheck);
+        // console.log('test')
         const transporter = nodemailer.createTransport(config.nodemailer);
-        console.log(transporter)
+        // console.log(transporter)
         const mailOptions = {
             from: config.nodemailer.auth.user,
             to: email,
