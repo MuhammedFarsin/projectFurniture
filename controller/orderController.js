@@ -12,9 +12,8 @@ const Coupon = require("../model/couponModel");
 require('dotenv').config();
 
 const RazorPayInstance = new Razorpay({
-  key_id: process.env.YOUR_ID_KEY,
-  key_secret:process.env.YOUR_SECRET_KEY
- 
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const calculateOrderPrice = (products) =>{
@@ -286,7 +285,7 @@ const CashOnDelivery = async(req,res)=>{
             message: "Order Created",
             order_id: order._id,
             amount: totalPrice * 100,
-            key_id: process.env.YOUR_ID_KEY, // Use order.key_id instead of process.env.YOUR_ID_KEY
+            key_id: process.env.RAZORPAY_KEY_ID,
             productName: req.body.name,
             contact: "9845738493",
             name: "Muhammed Farsin",

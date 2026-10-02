@@ -11,7 +11,7 @@ const nodemailer = {
         pass: process.env.PASSWORD
     }
 }
-
+console.log(nodemailer)
 const otpCheck={};
 
 const storage = multer.diskStorage({

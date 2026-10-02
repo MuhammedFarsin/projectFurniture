@@ -13,8 +13,8 @@ app.use(nocache())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const port = process.env.PORT||4000;
-mongoose.connect('mongodb://127.0.0.1/Website')
+const port = process.env.PORT||3000;
+mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('MongoDB connected');
     })
@@ -28,6 +28,6 @@ app.set('views','./view/users')
 
 app.use("/",userRout)
 app.use("/admin",adminRoute)
-app.listen(5000,()=>{
-    console.log("Listening to the server on http://127.0.0.1:4000"
-)});
+app.listen(port,()=>{
+    console.log(`Listening to the server on http://127.0.0.1:${port}`);
+});

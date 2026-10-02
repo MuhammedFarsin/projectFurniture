@@ -19,7 +19,7 @@ const loadAddress = async(req,res)=>{
         
     } catch (error) {
         console.log(error.message);
-    }
+    }  
 }
 const CreateAddress = async(req,res)=>{
     try {
